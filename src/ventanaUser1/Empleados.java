@@ -4,7 +4,17 @@
  * and open the template in the editor.
  */
 package ventanaUser1;
-
+import CRUD_Classes.Loader;
+import Conection.Conexion;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import ventanaUser2.ventanaUser2;
 /**
  *
  * @author dell
@@ -14,12 +24,57 @@ public class Empleados extends javax.swing.JFrame {
     /**
      * Creates new form Empleados
      */
-    public Empleados() {
+    static DefaultTableModel modelo;
+    String dept;
+    
+    public String getdept_name(){
+        return dept;
+    }
+    public void setDept(String dept){
+        this.dept = dept;
+        
+    }
+    
+    static String user;
+    
+    public Empleados(String user) {
         initComponents();
         setLayout(null);
         setLocationRelativeTo(null);
         setTitle("Empleados");
+        
+        
+        
+        this.user = user;
+        
     }
+    
+    public void mostrarTabla(DefaultTableModel modelo, String consulta) {
+  modelo.setRowCount(0);
+  Conexion conn = new Conexion();
+    
+  Connection c = conn.miconexion();
+  if (c != null) {
+   try {
+    Statement st = c.createStatement();
+    ResultSet rs = st.executeQuery(consulta);
+
+    while(rs.next()) {
+     Object[] tablaSQL = new Object[6];
+
+     for(int i=0; i<=modelo.getColumnCount()-1; i++) {
+     tablaSQL[i] = rs.getObject(i+1);
+    }
+
+    modelo.addRow(tablaSQL);
+   }
+   c.close();
+   } catch(SQLException se) {
+    JOptionPane.showMessageDialog(null, se);
+   }
+  }
+ }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,6 +91,19 @@ public class Empleados extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jComboBox1 = new javax.swing.JComboBox<>();
+        Marketing = new javax.swing.JButton();
+        Finance = new javax.swing.JButton();
+        Sales = new javax.swing.JButton();
+        Quality = new javax.swing.JButton();
+        HR = new javax.swing.JButton();
+        Research = new javax.swing.JButton();
+        Production = new javax.swing.JButton();
+        Customer_service = new javax.swing.JButton();
+        Development = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        bar = new javax.swing.JProgressBar();
+        labelload = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -47,13 +115,13 @@ public class Empleados extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "emp_no", "birth_date", "first_name", "last_name", "gender", "hire_date"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -61,6 +129,79 @@ public class Empleados extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jTextPane1);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "emp_no", "birth_date", "first_name", "last_name", "gender   ", "hire_date" }));
+
+        Marketing.setText("Marketing");
+        Marketing.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MarketingActionPerformed(evt);
+            }
+        });
+
+        Finance.setText("Finance");
+        Finance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FinanceActionPerformed(evt);
+            }
+        });
+
+        Sales.setText("Sales");
+        Sales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalesActionPerformed(evt);
+            }
+        });
+
+        Quality.setText("Quality Management");
+        Quality.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                QualityActionPerformed(evt);
+            }
+        });
+
+        HR.setText("Human Resources");
+        HR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HRActionPerformed(evt);
+            }
+        });
+
+        Research.setText("Research");
+        Research.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResearchActionPerformed(evt);
+            }
+        });
+
+        Production.setText("Production");
+        Production.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProductionActionPerformed(evt);
+            }
+        });
+
+        Customer_service.setText("Customer Services");
+        Customer_service.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Customer_serviceActionPerformed(evt);
+            }
+        });
+
+        Development.setText("Development");
+        Development.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DevelopmentActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 48)); // NOI18N
+        jLabel2.setText("Employees");
+
+        jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Regresar");
         jMenu1.addActionListener(new java.awt.event.ActionListener() {
@@ -86,32 +227,94 @@ public class Empleados extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(66, 66, 66)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(32, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(238, 238, 238))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 496, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(144, 144, 144)
+                                .addComponent(jLabel1)
+                                .addGap(103, 103, 103))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(128, 128, 128)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Production, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Development, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(289, 289, 289)
+                                .addComponent(labelload, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 779, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(HR)
+                        .addGap(55, 55, 55)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Research, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Customer_service, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Finance, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(Sales, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Marketing, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Quality, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(153, 153, 153))
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(HR)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(Research)
+                        .addComponent(Quality)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Production)
+                    .addComponent(Customer_service)
+                    .addComponent(Sales))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Development)
+                    .addComponent(Finance)
+                    .addComponent(Marketing))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelload, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -124,9 +327,74 @@ public class Empleados extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        new ventanaUser1().setVisible(true);
-        this.setVisible(false);
+        switch (user){
+                case "user1":
+                    new ventanaUser1().setVisible(true);
+                    this.setVisible(false);
+                    break;
+                case "user2":
+                    new ventanaUser2().setVisible(true);
+                    this.setVisible(false);
+                    break;
+                case "user3":
+                    break;
+        } 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void MarketingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MarketingActionPerformed
+        setDept("Marketing");
+         
+        llenarTabla(dept,1000, false);
+    }//GEN-LAST:event_MarketingActionPerformed
+
+    private void ResearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResearchActionPerformed
+        setDept("Research");
+        llenarTabla(dept,1000, false);
+    }//GEN-LAST:event_ResearchActionPerformed
+
+    private void QualityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QualityActionPerformed
+        setDept("Quality");
+        llenarTabla(dept,1000, false);
+    }//GEN-LAST:event_QualityActionPerformed
+
+    private void SalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalesActionPerformed
+        setDept("Sales");
+        llenarTabla(dept,1000, false);
+    }//GEN-LAST:event_SalesActionPerformed
+
+    private void FinanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FinanceActionPerformed
+        setDept("Finance");
+        llenarTabla(dept,1000, false);
+    }//GEN-LAST:event_FinanceActionPerformed
+
+    private void Customer_serviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Customer_serviceActionPerformed
+        setDept("Marketing");
+        llenarTabla(dept,1000, false);
+    }//GEN-LAST:event_Customer_serviceActionPerformed
+
+    private void DevelopmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DevelopmentActionPerformed
+        setDept("Development");
+        llenarTabla(dept,1000, false);
+    }//GEN-LAST:event_DevelopmentActionPerformed
+
+    private void ProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductionActionPerformed
+        setDept("Production");
+        llenarTabla(dept,1000, false);
+    }//GEN-LAST:event_ProductionActionPerformed
+
+    private void HRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HRActionPerformed
+       setDept("Human Resources");
+        llenarTabla(dept,1000, false);
+    }//GEN-LAST:event_HRActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(jTextPane1.getText().equalsIgnoreCase("")){
+            
+        }else{
+            
+            llenarTabla(dept,1000, true);
+        };
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,14 +426,62 @@ public class Empleados extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Empleados().setVisible(true);
+                new Empleados(user).setVisible(true);
             }
         });
+        
+        
+        
+    }
+    
+   
+    public void llenarTabla (String dept, int rows, boolean search) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        String query;
+        if(search){
+            if(jComboBox1.getSelectedItem().toString().equals("emp_no")){
+                query = "SELECT meni.employees.emp_no, meni.employees.birth_date, meni.employees.first_name, meni.employees.last_name, meni.employees.gender, meni.employees.hire_date FROM meni.employees INNER JOIN meni.dept_emp ON meni.employees.emp_no = meni.dept_emp.emp_no "
+                + "INNER JOIN meni.departments ON meni.dept_emp.dept_no = meni.departments.dept_no WHERE meni.departments.dept_name = '"+dept+"' AND ROWNUM <= 1000 AND meni.employees."+jComboBox1.getSelectedItem().toString()+" = "+jTextPane1.getText().toString()+"";
+            }else{
+                query = "SELECT meni.employees.emp_no, meni.employees.birth_date, meni.employees.first_name, meni.employees.last_name, meni.employees.gender, meni.employees.hire_date FROM meni.employees INNER JOIN meni.dept_emp ON meni.employees.emp_no = meni.dept_emp.emp_no "
+                + "INNER JOIN meni.departments ON meni.dept_emp.dept_no = meni.departments.dept_no WHERE meni.departments.dept_name = '"+dept+"' AND ROWNUM <= 1000 AND meni.employees."+jComboBox1.getSelectedItem().toString()+" = '"+jTextPane1.getText().toString()+"'";
+            }
+        }
+            else{
+                    query="SELECT meni.employees.emp_no, meni.employees.birth_date, meni.employees.first_name, meni.employees.last_name, meni.employees.gender, meni.employees.hire_date FROM meni.employees INNER JOIN meni.dept_emp ON meni.employees.emp_no = meni.dept_emp.emp_no "
+                + "INNER JOIN meni.departments ON meni.dept_emp.dept_no = meni.departments.dept_no WHERE meni.departments.dept_name = '"+dept+"' AND ROWNUM <= 1000";
+                    }
+            
+            ResultSet rs = Conexion.getTable(query);
+        modelo.setColumnIdentifiers(new Object[]{"Employee id", "Birth date", "Firstname", "Lastname", "Gender", "hire date"});
+        try {
+            while (rs.next()) {
+               
+                modelo.addRow(new Object[]{rs.getInt("emp_no"), rs.getDate("birth_date"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("gender"), rs.getDate("hire_date")});
+            }
+            jTable1.setModel(modelo);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+       
+    
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Customer_service;
+    private javax.swing.JButton Development;
+    private javax.swing.JButton Finance;
+    private javax.swing.JButton HR;
+    private javax.swing.JButton Marketing;
+    private javax.swing.JButton Production;
+    private javax.swing.JButton Quality;
+    private javax.swing.JButton Research;
+    private javax.swing.JButton Sales;
+    private javax.swing.JProgressBar bar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -173,5 +489,6 @@ public class Empleados extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JLabel labelload;
     // End of variables declaration//GEN-END:variables
 }

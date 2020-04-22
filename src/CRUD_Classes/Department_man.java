@@ -1,11 +1,15 @@
 package CRUD_Classes;
 
 
+import Conection.Conexion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -32,7 +36,7 @@ public class Department_man {
     
     final String queryApt_id = "SELECT emp_no FROM meni.employees ORDER BY emp_no";
     final String llave1 = "emp_no";
-    final String building = "SELECT dept_no FROM meni.employees ORDER BY dept_no";
+    final String building = "SELECT dept_no FROM meni.departments ORDER BY dept_no";
     final String llave2 = "dept_no";
     String from_date;
     String to_date;
@@ -40,7 +44,7 @@ public class Department_man {
     JButton field4 = new JButton("Seleccionar fecha");
     
     JComboBox<String> field2 = new JComboBox<>();
-     JComboBox<String> field1 = new JComboBox<>();
+     
      JFrame v1 = new JFrame();
      static DefaultTableModel modelo;
      static JTable tabla1;
@@ -48,8 +52,14 @@ public class Department_man {
          this.v1 = v1;
      }
      
-     public void show() throws SQLException{
-    JDialog v = new JDialog(v1, "Apartments");
+     public void show(boolean manager) throws SQLException{
+         String text;
+        if(manager){
+            text = "Department manager";
+        }else{
+            text = "Department employee";
+        }
+    JDialog v = new JDialog(v1, text);
     
     JLabel label1 = new JLabel("emp_no");
     JLabel label2 = new JLabel("dept_no");
@@ -61,12 +71,10 @@ public class Department_man {
     
     
     
+    JTextField field1 = new JTextField();
     
     
-    
-    QueryComboClass q1 = new QueryComboClass();
-    q1.prueba(building, llave2);
-    field1 = q1.GetQueryCombo();
+   
     
     
     QueryComboClass qcc = new QueryComboClass();
@@ -97,46 +105,29 @@ public class Department_man {
      @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource()==field3){
-                JLabel label = new JLabel("Selected Date:");
-		final JTextField text = new JTextField(20);
-		JButton b = new JButton("popup");
-		JPanel p = new JPanel();
-		p.add(label);
-		p.add(text);
-		p.add(b);
+                JPanel p = new JPanel();
+        
 		final JFrame f = new JFrame();
+                f.setLocationRelativeTo(field3);
 		f.getContentPane().add(p);
 		f.pack();
 		f.setVisible(true);
-		b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				text.setText(new DatePicker(f).setPickedDate());
-                                from_date = text.getText();
-                                field3.setText(from_date.toString());
+                field3.setText(new DatePicker(f).setPickedDate());
+                               
                                 f.dispose();
-			}
-		});
+		
             }
             if (e.getSource()==field4){
-                 JLabel label = new JLabel("Selected Date:");
-		final JTextField text = new JTextField(20);
-		JButton b = new JButton("popup");
-		JPanel p = new JPanel();
-		p.add(label);
-		p.add(text);
-		p.add(b);
+                JPanel p = new JPanel();
+        
 		final JFrame f = new JFrame();
+                f.setLocationRelativeTo(field3);
 		f.getContentPane().add(p);
 		f.pack();
 		f.setVisible(true);
-		b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				text.setText(new DatePicker(f).setPickedDate());
-                                to_date = text.getText();
-                                field4.setText(to_date);
+                field3.setText(new DatePicker(f).setPickedDate());
+                               
                                 f.dispose();
-			}
-		});
             }
             if (e.getSource()== button){
                 if ( field4.getText().equals("")){
@@ -151,9 +142,19 @@ public class Department_man {
                 
                 
                else{
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    int id = Integer.parseInt(field1.getText());
+                    String id_dept = field2.getSelectedItem().toString();
+                    String fecha1 = field3.getText();
+                    String fecha2 = field4.getText();
+                    
+                    LocalDate localDate = LocalDate.parse(fecha1, formatter);
+                    LocalDate localDate2 = LocalDate.parse(fecha2, formatter);
+                    java.sql.Date sqlDate = java.sql.Date.valueOf( localDate );
+                    java.sql.Date sqlDate2 = java.sql.Date.valueOf( localDate2 );
                     Conexion con = new Conexion();
                     Connection c = con.miconexion();
-                    int dato1 = Integer.parseInt(field1.getSelectedItem().toString());
+                    
                     
       
                     if (c != null) {
@@ -161,11 +162,24 @@ public class Department_man {
 
                     try {
                     Statement st = c.createStatement();
-                     st.executeUpdate("INSERT INTO meni.dept_manager ("+label1.getText()+","+label2.getText()+","+ label3.getText() 
-                             + "," + label4.getText() +"');");
+                    PreparedStatement p;
+                    if(manager){
+                    p = c.prepareStatement("INSERT INTO meni.dept_manager VALUES(?,?,?,?)");
+                    }else{
+                     p = c.prepareStatement("INSERT INTO meni.dept_emp VALUES(?,?,?,?)");
+                    }
+                    p.setInt(1, id);
+                      p.setString(2, id_dept);
+                      p.setDate(3, sqlDate);
+                      p.setDate(4, sqlDate2);
+                    
+                     p.executeUpdate();
+                    
+                        
+                    
                     c.close();
                     JOptionPane.showMessageDialog(null, "Dato agregado correctamente xD");
-                    field1.setSelectedIndex(1);
+                    field1.setText("");
                     
                     field2.setSelectedIndex(1);
                     field3.setText("");
@@ -203,7 +217,8 @@ public class Department_man {
     
     v.add(button);
     button.addActionListener(listener);
-    
+    field3.addActionListener(listener);
+    field4.addActionListener(listener);
 
 
     
@@ -217,19 +232,24 @@ public class Department_man {
             }
     
     
-    public void update(int linea, JTable tabla1) throws SQLException{
-       JDialog v = new JDialog(v1, "Apartments");
+    public void update(int linea, JTable tabla1, boolean manager) throws SQLException{
+        String text;
+        if(manager){
+            text = "Department manager";
+        }else{
+            text = "Department employee";
+        }
+       JDialog v = new JDialog(v1, text);
     
     JLabel label1 = new JLabel("emp_no");
     JLabel label2 = new JLabel("dept_no");
     JLabel label3 = new JLabel("from_date");
     JLabel label4 = new JLabel("to_date");
     
-    
+    JTextField field1 = new JTextField();
    
-    QueryComboClass q1 = new QueryComboClass();
-    q1.prueba(building, llave2);
-    field1 = q1.GetQueryCombo();
+   
+   // field1 = q1.GetQueryCombo();
     
     
     QueryComboClass qcc = new QueryComboClass();
@@ -254,7 +274,7 @@ public class Department_man {
     
     button.setBounds(140, 520, 120, 30);
     
-    field1.setSelectedItem(tabla1.getValueAt(linea,0).toString());
+    field1.setText(tabla1.getValueAt(linea,0).toString());
     field2.setSelectedItem(tabla1.getValueAt(linea, 1).toString());
     field3.setText(tabla1.getValueAt(linea, 2).toString());
     field4.setText(tabla1.getValueAt(linea, 3).toString());
@@ -280,7 +300,16 @@ public class Department_man {
                else{
                     Conexion con = new Conexion();
                     Connection c = con.miconexion();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    int id = Integer.parseInt(field1.getText());
+                    String id_dept = field2.getSelectedItem().toString();
+                    String fecha1 = field3.getText();
+                    String fecha2 = field4.getText();
                     
+                    LocalDate localDate = LocalDate.parse(fecha1, formatter);
+                    LocalDate localDate2 = LocalDate.parse(fecha2, formatter);
+                    java.sql.Date sqlDate = java.sql.Date.valueOf( localDate );
+                    java.sql.Date sqlDate2 = java.sql.Date.valueOf( localDate2 );
                     
       
                     if (c != null) {
@@ -288,8 +317,20 @@ public class Department_man {
 
                     try {
                     Statement st = c.createStatement();
-                    st.executeUpdate("UPDATE meni.dept_manager SET "+label1.getText()+"="+field1.getSelectedItem().toString()+","+label2.getText()+"="+field2.getSelectedItem().toString()+", "+ label3.getText() 
-                             + "="+field3.getText().toString()+", " + label4.getText() + "="+field4.getText().toString()+";");
+                    PreparedStatement p;
+                    if(manager){
+                    p = c.prepareStatement("UPDATE meni.dept_manager SET emp_no = ?, dept_no = ?, from_date = ?, to_date = ?");
+                    }else{
+                     p = c.prepareStatement("UPDATE meni.dept_emp SET emp_no = ?, dept_no = ?, from_date = ?, to_date = ?");
+                    }
+                      p.setInt(1, id);
+                      p.setString(2, id_dept);
+                      p.setDate(3, sqlDate);
+                      p.setDate(4, sqlDate2);
+                    
+                     p.executeUpdate();
+                   // p.executeUpdate("UPDATE meni.dept_manager SET "+label1.getText()+"="+field1.getText().toString()+","+label2.getText()+"="+field2.getSelectedItem().toString()+", "+ label3.getText() 
+                    //         + "="+field3.getText().toString()+", " + label4.getText() + "="+field4.getText().toString()+";");
                      c.close();
                     JOptionPane.showMessageDialog(null, "Dato agregado correctamente xD");
                     
@@ -325,7 +366,8 @@ public class Department_man {
     
     v.add(button);
     button.addActionListener(listener);
-    
+    field3.addActionListener(listener);
+    field4.addActionListener(listener);
 
 
     

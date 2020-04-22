@@ -1,6 +1,7 @@
 package CRUD_Classes;
 
 
+import Conection.Conexion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -30,10 +31,10 @@ import javax.swing.table.DefaultTableModel;
 public class Dept_employee {
         
     
-    final String queryApt_id = "SELECT emp_no FROM meni.dept_emp ORDER BY emp_no";
-    final String llave1 = "emp_no";
-    final String building = "SELECT dept_no FROM meni.employees ORDER BY dept_no";
-    final String llave2 = "dept_no";
+    final String queryApt_id = "SELECT meni.emp_no FROM meni.dept_emp ORDER BY meni.emp_no";
+    final String llave1 = "meni.emp_no";
+    final String building = "SELECT meni.dept_no FROM meni.employees ORDER BY dept_no";
+    final String llave2 = "meni.dept_no";
     String from_date;
     String to_date;
     JButton field3 = new JButton("Seleccionar fecha");
@@ -41,7 +42,7 @@ public class Dept_employee {
     
     JComboBox<String> field2 = new JComboBox<>();
      JComboBox<String> field1 = new JComboBox<>();
-     JFrame v1 = new JFrame();
+     static JFrame v1 = new JFrame();
      static DefaultTableModel modelo;
      static JTable tabla1;
      public Dept_employee(JFrame v1){
@@ -49,7 +50,7 @@ public class Dept_employee {
      }
      
      public void show() throws SQLException{
-    JDialog v = new JDialog(v1, "Apartments");
+    JDialog v = new JDialog(v1, "Empleados");
     
     JLabel label1 = new JLabel("emp_no");
     JLabel label2 = new JLabel("dept_no");
@@ -68,7 +69,7 @@ public class Dept_employee {
     q1.prueba(building, llave2);
     field1 = q1.GetQueryCombo();
     
-    
+         System.out.println("Aqui es");
     QueryComboClass qcc = new QueryComboClass();
     qcc.prueba(building, llave2);
     field2 = qcc.GetQueryCombo();
@@ -338,4 +339,5 @@ public class Dept_employee {
     
             
     }
+    
 }

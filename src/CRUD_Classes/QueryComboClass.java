@@ -10,6 +10,7 @@ package CRUD_Classes;
  *
  * @author propietario
  */
+import Conection.Conexion;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +31,7 @@ public class QueryComboClass {
     
     public void prueba(String query, String llave) throws SQLException{
         
-    ArrayList<String> llaves = new ArrayList<>();
+    ArrayList<Object> llaves = new ArrayList<>();
         
         try{
         Conexion conn = new Conexion();
@@ -39,9 +40,9 @@ public class QueryComboClass {
         ResultSet rs = st.executeQuery(query);
         
         while(rs.next()){
-            String cat = rs.getString(llave);
+            Object cat = rs.getObject(llave);
             // add cat's ids tp the array list
-            llaves.add(cat);
+            llaves.add(cat.toString());
         }
         
         rs.close();

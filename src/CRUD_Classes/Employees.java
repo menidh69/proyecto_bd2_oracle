@@ -1,6 +1,7 @@
 package CRUD_Classes;
 
 
+import Conection.Conexion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;

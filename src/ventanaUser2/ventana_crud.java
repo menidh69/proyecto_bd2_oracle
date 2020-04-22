@@ -3,7 +3,7 @@ package ventanaUser2;
 
 import CRUD_Classes.Department_man;
 import CRUD_Classes.Employees;
-import CRUD_Classes.Conexion;
+import Conection.Conexion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -26,6 +26,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import CRUD_Classes.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -38,12 +43,13 @@ import CRUD_Classes.*;
  */
 public class ventana_crud extends Thread{
     
-    public void mostrarTabla(DefaultTableModel modelo, String consulta) {
+    public void mostrarTabla (DefaultTableModel modelo, String consulta) {
   modelo.setRowCount(0);
   Conexion conn = new Conexion();
     
   Connection c = conn.miconexion();
   if (c != null) {
+     
    try {
     Statement st = c.createStatement();
     ResultSet rs = st.executeQuery(consulta);
@@ -64,16 +70,37 @@ public class ventana_crud extends Thread{
   }
  }
     
-        
     
+    
+ int rowCount;       
 
+    public int getRowCount() {
+        return rowCount;
+    }
+
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
+
+    
+    
+    
  static DefaultTableModel modelo;
  static JTable tabla1;
  static  JScrollPane scroll1;
  JComboBox combobusqueda = new JComboBox();
  
- //public static void main(String[] args) {
+JLabel load = new JLabel();
+ JButton Pausar = new JButton ("Pausa");
+ JButton Stop = new JButton ("Stop - Cancelar");
+ JButton Reanudar = new JButton ("Reanudar");
+ static Loader l ;
+ public static void main(String[] args) {
+     ventana_crud yes = new ventana_crud();
+     yes.start();
+ }
  public void run(){
+     
   ventana_crud v3 = new ventana_crud();
   JFrame v = new JFrame("Ventana 3");
 
@@ -81,7 +108,12 @@ public class ventana_crud extends Thread{
 
   tabla1 = new JTable(modelo);
   scroll1 = new JScrollPane(tabla1);
-  
+  boolean todo = false;
+  JSpinner cantidadregistros = new JSpinner();
+  cantidadregistros.setValue(100);
+  JRadioButton amount = new JRadioButton("Cantidad");
+  amount.setSelected(true);
+  JRadioButton all = new JRadioButton("All");
   JButton boton1 = new JButton("Mostrar");
   JButton boton2 = new JButton("Update");
   JButton boton3 = new JButton("Insert");
@@ -93,7 +125,8 @@ public class ventana_crud extends Thread{
   JLabel labelbusqueda2 = new JLabel("de busqueda:");
   JTextField tx1 = new JTextField();
   
-  JLabel bd = new JLabel("Base de Datos: Apartment Rentals");
+  
+  JLabel bd = new JLabel("Base de Datos: Employees");
   JLabel bdtable = new JLabel("Seleccionar tabla");
   
   JComboBox combotable = new JComboBox();
@@ -114,10 +147,25 @@ JComboBox tx2 = new JComboBox();
   tabla1.setBounds(20,85,250,150);
   scroll1.setBounds(250,20,900,650);
   bd.setBounds(20, 20, 400, 100);
-  bdtable.setBounds(20, 140, 150, 20);
-  combotable.setBounds(20, 170, 200, 50);
-  combobusqueda.setBounds(20,365,200,25);
   
+  load.setBounds(20, 600, 150, 100);
+  Stop.setBounds(20, 510, 150, 30);
+  Pausar.setBounds(20, 540, 150, 30);
+  Reanudar.setBounds(20, 570, 150, 30);
+  bdtable.setBounds(20, 100, 150, 20);
+  combotable.setBounds(20, 120, 200, 50);
+  all.setBounds(20,170,150,30);
+  amount.setBounds(20,190,150,30); 
+  cantidadregistros.setBounds(120,190,100,30);
+  combobusqueda.setBounds(20,365,200,25);
+  ButtonGroup bg = new ButtonGroup();
+  bg.add(all);
+  bg.add(amount);
+  
+  
+  Stop.setEnabled(false);
+  Pausar.setEnabled(false);
+  Reanudar.setEnabled(false);
   
   combotable.addItem("Seleccione una tabla");
   combotable.addItem("employees");
@@ -269,22 +317,83 @@ combotable.addItemListener(new ItemListener() {
    public void actionPerformed(ActionEvent e) {
        
        
-       if(e.getSource()==nuevoboton){
-           
+       if(e.getSource()==nuevoboton){ //BOTON BUSCAR
+           if(combobusqueda.getSelectedItem().equals("emp_no") || combobusqueda.getSelectedItem().equals("salary")){
+               String consulta = "SELECT * FROM meni."+ 
+combotable.getSelectedItem().toString() +" WHERE meni." + combobusqueda.getSelectedItem().toString() +" = "+ tx1.getText() ;
+      v3.mostrarTabla(modelo, consulta);
+           }else{
            String consulta = "SELECT * FROM meni."+ 
-combotable.getSelectedItem().toString() +" WHERE " + combobusqueda.getSelectedItem().toString() +" = "+ tx1.getText() ;
+combotable.getSelectedItem().toString() +" WHERE meni." + combobusqueda.getSelectedItem().toString() +" = '"+ tx1.getText()+"'" ;
       v3.mostrarTabla(modelo, consulta);
        }
+       }       
        
        
        
-    if(e.getSource() == boton1) {
+    if(e.getSource() == boton1) {//BOTON MOSTRAR
         String tabla = combotable.getSelectedItem().toString();
-        System.out.println(tabla);
-     v3.mostrarTabla(modelo, "SELECT * FROM meni."+tabla);
-    } //fin de boton1
+        if(tabla.equals("Departments")){
+            
+            mostrarTabla(modelo,"SELECT * FROM meni.departments");
+        }else if(tabla.equals("dept_manager")){
+            mostrarTabla(modelo,"SELECT * FROM meni.dept_manager");
+        }else{
+        String queryamount ;
+        int rows = 0;
+        if(all.isSelected()){   
+            queryamount = "SELECT COUNT(*) FROM meni."+tabla;
+            Conexion conn = new Conexion();
+            Connection c = conn.miconexion();
+            try{
+            Statement st = c.createStatement();
+            ResultSet r = st.executeQuery(queryamount);
+            while(r.next()){
+                rows = r.getInt("COUNT(*)");
+            }
+            }catch(SQLException e11){}
+        }else{
+            rows = (Integer) cantidadregistros.getValue();
+            }
+        JProgressBar b = new JProgressBar(0,rows);
+        b.setBounds(20, 40, 150, 100);
+        v.add(b);
+        
+         System.out.println(tabla);
+        l = new Loader("Query",modelo, "SELECT * FROM meni."+tabla+" WHERE emp_no=",10000, b, load, rows);
+        l.start();
+        Pausar.setEnabled(true);
+        Stop.setEnabled(true);
+        }
+               
+                
+    } //fin de boton1 mostrar
+    
+     if(e.getSource()==Pausar){
+        Reanudar.setEnabled(true);
+        Pausar.setEnabled(false);
+        l.suspenderHilo();    
+        load.setText("Loading Paused");
+                }
+     if(e.getSource()==Reanudar){
+        Reanudar.setEnabled(false);
+        Pausar.setEnabled(true);    
+        l.reanudarHilo();
+        load.setText("Loading...");
+                }
+     if(e.getSource()==Stop){
+        Reanudar.setEnabled(false);
+        Pausar.setEnabled(false);    
+        Stop.setEnabled(false);
+        l.stopHilo();
+        load.setText("Cancelled");
+        
+                }
 
-   if(e.getSource() == boton4) {
+     
+     
+     
+   if(e.getSource() == boton4) { //BOTON BORRAR
     Object id = "";
     boolean status_id = true;
 
@@ -307,29 +416,44 @@ combotable.getSelectedItem().toString() +" WHERE " + combobusqueda.getSelectedIt
       if(c != null) {
        try {
         Statement std = c.createStatement();
-        if (combotable.getSelectedItem().toString().contains("employees") || combotable.getSelectedItem().toString().contains("departments") ){
+        
             switch(combotable.getSelectedItem().toString()){
                 case "employees":
-                    std.executeUpdate("DELETE FROM employees  WHERE emp_no = " + id);
-            std.executeUpdate("DELETE FROM "+ combotable.getSelectedItem().toString()+" WHERE "+ combobusqueda.getItemAt(1).toString() +"=" + id);
-            v3.mostrarTabla(modelo, "SELECT * FROM "+combotable.getSelectedItem());
+                    std.executeUpdate("DELETE FROM meni.employees  WHERE meni.emp_no = " + id);
+            
+                    
                     break;
                 case "departments":
-                         std.executeUpdate("DELETE FROM departments  WHERE dept_no = " + id);
-            std.executeUpdate("DELETE FROM "+ combotable.getSelectedItem().toString()+" WHERE "+ combobusqueda.getItemAt(1).toString() +"=" + id);
-            v3.mostrarTabla(modelo, "SELECT * FROM "+combotable.getSelectedItem());
+                         std.executeUpdate("DELETE FROM meni.departments  WHERE dept_no = '" + id+"'");
+            
+           
                         break;
-                
+                case "dept_emp":
+                         std.executeUpdate("DELETE FROM meni.dept_emp  WHERE emp_no = " + id);
+            
+           
+                        break;        
+                case "dept_manager":
+                         std.executeUpdate("DELETE FROM meni.dept_manager  WHERE emp_no = " + id);
            
             
+                        break;
+                
+                case "titles":
+                         std.executeUpdate("DELETE FROM meni.titles  WHERE emp_no = " + id);
+           
+            
+                        break;
+                case "salaries":
+                         std.executeUpdate("DELETE FROM meni.salaries  WHERE emp_no = " + id);
+            
+            
+                        break;
             
             }
-            }else{
-        std.executeUpdate("DELETE FROM "+ combotable.getSelectedItem().toString()+" WHERE "+ combobusqueda.getItemAt(1).toString() +"=" + id);
-        v3.mostrarTabla(modelo, "SELECT * FROM "+combotable.getSelectedItem());
-        }
+            
         c.close();
-        JOptionPane.showMessageDialog(null, "Borraste la informacion, chale!!");
+        JOptionPane.showMessageDialog(null, "Borraste la informacion, chale!! \n Haz click en mostrar para actualizar");
         
        } catch(SQLException se9) {
         JOptionPane.showMessageDialog(null, se9);
@@ -337,9 +461,9 @@ combotable.getSelectedItem().toString() +" WHERE " + combobusqueda.getSelectedIt
       }
      }
     }
-   } //fin boton4
+   } //fin boton4 borrar
 
-   if(e.getSource() == boton3) {
+   if(e.getSource() == boton3) { //BOTON INSERT
            
                String valor;
                valor = combotable.getSelectedItem().toString();
@@ -349,44 +473,53 @@ combotable.getSelectedItem().toString() +" WHERE " + combobusqueda.getSelectedIt
                        
                        break;
                    case "employees":
-                       Employees emp1 = new Employees(v);
-               {
-                   try {
-                       emp1.show();
-                   } catch (SQLException ex) {
-                       Logger.getLogger(ventana_crud.class.getName()).log(Level.SEVERE, null, ex);
-                   }
-               }
+                       insertEmployee emp = new insertEmployee();
+                       emp.setVisible(true);
+              
                        break;
                        
                    case "departments":
-                       
+                       insertDept dept = new insertDept();
+                       dept.setVisible(true);
                        
                        break;
                        
                    case "dept_manager":
-                       
-                       break;
+                       Department_man v2 = new Department_man(v);
+               
+                   try {
+                       v2.show(true);
+                   } catch (SQLException ex) {}
+                    break;
                        
                    case "dept_emp":
-                       Department_man dp = new Department_man(v);
+                       Department_man depemp = new Department_man(v);
+                       try{
+                       depemp.show(false);
+                       }catch(SQLException ex){}
+                       break;
+                   case "titles":
+                       Titles t = new Titles(v);
                {
                    try {
-                       dp.show();
+                       t.show();
                    } catch (SQLException ex) {
                        Logger.getLogger(ventana_crud.class.getName()).log(Level.SEVERE, null, ex);
                    }
                }
-                       
-                       break;
-                   case "titles":
-                       
                        
                        
                        break;
                        
                    case "salaries":
-                       
+                       Salaries s = new Salaries(v);
+               {
+                   try {
+                       s.show();
+                   } catch (SQLException ex) {
+                       Logger.getLogger(ventana_crud.class.getName()).log(Level.SEVERE, null, ex);
+                   }
+               }
                        break;
                        
                        
@@ -394,7 +527,7 @@ combotable.getSelectedItem().toString() +" WHERE " + combobusqueda.getSelectedIt
     
    
 
-   if(e.getSource() == boton2) {
+   if(e.getSource() == boton2) { //BOTON UPDATE
      
      int linea = tabla1.getSelectedRow();
      
@@ -422,28 +555,53 @@ combotable.getSelectedItem().toString() +" WHERE " + combobusqueda.getSelectedIt
                 break;
                 
             case "departments":
-               
-                
+               Departments dep = new Departments();
+               try{ 
+               dep.update(linea, tabla1);}catch(SQLException ex){}
                 break;    
             
             case "dept_manager":
-               
+               Department_man v2 = new Department_man(v);
+        {
+            try {
+                v2.update(linea, tabla1, true);
+            } catch (SQLException ex) {
+                Logger.getLogger(ventana_crud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                 break;
                 
             case "dept_emp":
-              
+               Department_man depemp = new Department_man(v);
+                       try{
+                       depemp.update(linea, tabla1, false);
+                       }catch(SQLException ex){}
                
                 
                 break;
             case "titles":
-               
+               Titles t = new Titles(v);
+        {
+            try {
+                t.update(linea, tabla1);
+            } catch (SQLException ex) {
+                Logger.getLogger(ventana_crud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                
                 
-                break;    
+                break;        
                 
             case "salaries":
-              
-                break;   
+              Salaries s = new Salaries(v);
+        {
+            try {
+                s.update(linea, tabla1);
+            } catch (SQLException ex) {
+                Logger.getLogger(ventana_crud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+                break;      
        }
          
          
@@ -469,6 +627,9 @@ combotable.getSelectedItem().toString() +" WHERE " + combobusqueda.getSelectedIt
   boton3.addActionListener(listener);
   boton4.addActionListener(listener);
   nuevoboton.addActionListener(listener);
+  Pausar.addActionListener(listener);
+  Stop.addActionListener(listener);
+  Reanudar.addActionListener(listener);
   v.add(tx1);
   v.add(boton1);
   v.add(boton2);
@@ -483,6 +644,14 @@ combotable.getSelectedItem().toString() +" WHERE " + combobusqueda.getSelectedIt
   v.add(combobusqueda);
   v.add(nuevoboton);
   
+  v.add(load);
+  v.add(amount);
+  v.add(all);
+  v.add(cantidadregistros);
+  v.add(Stop);
+  v.add(Pausar);
+  v.add(Reanudar);
+  
 
   v.setLayout(null);
   v.setResizable(false);
@@ -490,9 +659,15 @@ combotable.getSelectedItem().toString() +" WHERE " + combobusqueda.getSelectedIt
   v.setLocationRelativeTo(null);
   v.setDefaultCloseOperation(v.EXIT_ON_CLOSE);
   v.setVisible(true);
+  
 
  }
-}
+ 
+ 
+
+ }
+ 
+
 
 
 

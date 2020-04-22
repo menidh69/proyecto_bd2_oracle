@@ -1,0 +1,366 @@
+package CRUD_Classes;
+
+
+import Conection.Conexion;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author propietario
+ */
+public class Salaries {
+    
+    
+    
+//    final String building = "SELECT dept_no FROM meni.departments ORDER BY dept_no";
+//    final String llave2 = "dept_no";
+    String from_date;
+    String to_date;
+    JButton field3 = new JButton("Seleccionar fecha");
+    JButton field4 = new JButton("Seleccionar fecha");
+    
+    JSpinner field2 = new JSpinner();
+     
+     JFrame v1 = new JFrame();
+     static DefaultTableModel modelo;
+     static JTable tabla1;
+     public Salaries(JFrame v1){
+         this.v1 = v1;
+     }
+     
+     public void show() throws SQLException{
+         String text="Salaries";
+        
+    JDialog v = new JDialog(v1, text);
+    
+    JLabel label1 = new JLabel("emp_no");
+    JLabel label2 = new JLabel("salary");
+    JLabel label3 = new JLabel("from_date");
+    JLabel label4 = new JLabel("to_date");
+   
+    
+    
+    
+    
+    
+    JTextField field1 = new JTextField();
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    JButton button = new JButton ("Guardar");
+    
+    label1.setBounds(20, 40, 150, 20);
+    label2.setBounds(20, 100, 150, 20);
+    label3.setBounds(20, 160, 150, 20);
+    label4.setBounds(20, 220, 150, 20);
+   
+    
+    field1.setBounds(200, 40, 150, 20);
+    field2.setBounds(200, 100, 150, 20);
+    field3.setBounds(200, 160, 150, 20);
+    field4.setBounds(200, 220, 150, 20);
+   
+    
+    
+    button.setBounds(140, 520, 120, 30);
+    
+    ActionListener listener = new ActionListener(){
+     @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource()==field3){
+                JPanel p = new JPanel();
+        
+		final JFrame f = new JFrame();
+                f.setLocationRelativeTo(field3);
+		f.getContentPane().add(p);
+		f.pack();
+		f.setVisible(true);
+                field3.setText(new DatePicker(f).setPickedDate());
+                               
+                                f.dispose();
+		
+            }
+            if (e.getSource()==field4){
+                JPanel p = new JPanel();
+        
+		final JFrame f = new JFrame();
+                f.setLocationRelativeTo(field3);
+		f.getContentPane().add(p);
+		f.pack();
+		f.setVisible(true);
+                field3.setText(new DatePicker(f).setPickedDate());
+                               
+                                f.dispose();
+            }
+            if (e.getSource()== button){
+                if ( field4.getText().equals("")){
+                          JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+
+                } else if (field4.getText().length()>10){
+                    JOptionPane.showMessageDialog(null, label4.getText() + " debe tener menos de 10 caracteres");
+                }
+                
+                
+                
+                
+                
+               else{
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    int id = Integer.parseInt(field1.getText());
+                    int id_dept = (Integer) field2.getValue();
+                    String fecha1 = field3.getText();
+                    String fecha2 = field4.getText();
+                    
+                    LocalDate localDate = LocalDate.parse(fecha1, formatter);
+                    LocalDate localDate2 = LocalDate.parse(fecha2, formatter);
+                    java.sql.Date sqlDate = java.sql.Date.valueOf( localDate );
+                    java.sql.Date sqlDate2 = java.sql.Date.valueOf( localDate2 );
+                    Conexion con = new Conexion();
+                    Connection c = con.miconexion();
+                    
+                    
+      
+                    if (c != null) {
+                    
+
+                    try {
+                    Statement st = c.createStatement();
+                    PreparedStatement p;
+                    
+                    p = c.prepareStatement("INSERT INTO meni.salaries VALUES(?,?,?,?)");
+                    
+                    p.setInt(1, id);
+                      p.setInt(2, id_dept);
+                      p.setDate(3, sqlDate);
+                      p.setDate(4, sqlDate2);
+                    
+                     p.executeUpdate();
+                    
+                        
+                    
+                    c.close();
+                    JOptionPane.showMessageDialog(null, "Dato agregado correctamente xD");
+                    field1.setText("");
+                    
+                    field2.setValue(0);
+                    field3.setText("");
+                    field4.setText("");
+                    
+                     } catch(SQLException se10) {
+                    JOptionPane.showMessageDialog(null, se10);
+                    }
+                     }
+                }
+                
+                
+                
+                
+                
+                
+            }
+        }
+    };
+    
+    
+    
+    
+    v.add(label1);
+    v.add(label2);
+    v.add(label3);
+    v.add(label4);
+   
+    
+    v.add(field1);
+    v.add(field2);
+    v.add(field3);
+    v.add(field4);
+   
+    
+    v.add(button);
+    button.addActionListener(listener);
+    field3.addActionListener(listener);
+    field4.addActionListener(listener);
+
+
+    
+    v.setLayout(null);
+  v.setResizable(false);
+  v.setSize(400,600);
+  v.setLocationRelativeTo(null);
+  v.setDefaultCloseOperation(v.DISPOSE_ON_CLOSE);
+  v.setVisible(true);
+    
+            }
+    
+    
+    public void update(int linea, JTable tabla1) throws SQLException{
+        String text = "Salaries";
+        
+       JDialog v = new JDialog(v1, text);
+    
+    JLabel label1 = new JLabel("emp_no");
+    JLabel label2 = new JLabel("salary");
+    JLabel label3 = new JLabel("from_date");
+    JLabel label4 = new JLabel("to_date");
+    
+    JTextField field1 = new JTextField();
+   
+   
+   // field1 = q1.GetQueryCombo();
+    
+    
+    
+    
+    
+    
+    JButton button = new JButton ("Guardar");
+    
+    label1.setBounds(20, 40, 150, 20);
+    label2.setBounds(20, 100, 150, 20);
+    label3.setBounds(20, 160, 150, 20);
+    label4.setBounds(20, 220, 150, 20);
+   
+    
+    field1.setBounds(200, 40, 150, 20);
+    field2.setBounds(200, 100, 150, 20);
+    field3.setBounds(200, 160, 150, 20);
+    field4.setBounds(200, 220, 150, 20);
+    
+    button.setBounds(140, 520, 120, 30);
+    
+    field1.setText(tabla1.getValueAt(linea,0).toString());
+    field2.setValue((Number)tabla1.getValueAt(linea, 1));
+    field3.setText(tabla1.getValueAt(linea, 2).toString());
+    field4.setText(tabla1.getValueAt(linea, 3).toString());
+    
+    
+    button.setBounds(140, 520, 120, 30);
+    
+    ActionListener listener = new ActionListener(){
+     @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource()== button){
+                if ( field4.getText().equals("")){
+                          JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+
+                } else if (field4.getText().length()>10){
+                    JOptionPane.showMessageDialog(null, label4.getText() + " debe tener menos de 10 caracteres");
+                }
+                
+                
+                
+                
+                
+               else{
+                    Conexion con = new Conexion();
+                    Connection c = con.miconexion();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    int id = Integer.parseInt(field1.getText());
+                    int id_dept = (Integer) field2.getValue();
+                    String fecha1 = field3.getText();
+                    String fecha2 = field4.getText();
+                    
+                    LocalDate localDate = LocalDate.parse(fecha1, formatter);
+                    LocalDate localDate2 = LocalDate.parse(fecha2, formatter);
+                    java.sql.Date sqlDate = java.sql.Date.valueOf( localDate );
+                    java.sql.Date sqlDate2 = java.sql.Date.valueOf( localDate2 );
+                    
+      
+                    if (c != null) {
+                    
+
+                    try {
+                    Statement st = c.createStatement();
+                    PreparedStatement p;
+                   
+                     p = c.prepareStatement("UPDATE meni.salaries SET emp_no = ?, salary = ?, from_date = ?, to_date = ?");
+                    
+                      p.setInt(1, id);
+                      p.setInt(2, id_dept);
+                      p.setDate(3, sqlDate);
+                      p.setDate(4, sqlDate2);
+                    
+                     p.executeUpdate();
+                   // p.executeUpdate("UPDATE meni.dept_manager SET "+label1.getText()+"="+field1.getText().toString()+","+label2.getText()+"="+field2.getSelectedItem().toString()+", "+ label3.getText() 
+                    //         + "="+field3.getText().toString()+", " + label4.getText() + "="+field4.getText().toString()+";");
+                     c.close();
+                    JOptionPane.showMessageDialog(null, "Dato agregado correctamente xD");
+                    
+                     } catch(SQLException se10) {
+                    JOptionPane.showMessageDialog(null, se10);
+                    }
+                     }
+                }
+                
+                
+                
+                
+                
+                
+            }
+        }
+    };
+    
+    
+    
+    
+    v.add(label1);
+    v.add(label2);
+    v.add(label3);
+    v.add(label4);
+   
+    
+    v.add(field1);
+    v.add(field2);
+    v.add(field3);
+    v.add(field4);
+ 
+    
+    v.add(button);
+    button.addActionListener(listener);
+    field3.addActionListener(listener);
+    field4.addActionListener(listener);
+
+
+    
+    v.setLayout(null);
+  v.setResizable(false);
+  v.setSize(400,600);
+  v.setLocationRelativeTo(null);
+  v.setDefaultCloseOperation(v.DISPOSE_ON_CLOSE);
+  v.setVisible(true);
+    
+            
+    }
+}
+

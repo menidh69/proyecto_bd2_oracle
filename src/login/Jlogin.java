@@ -5,7 +5,7 @@
  */
 package login;
 import ventanaUser1.ventanaUser1;
-import ventanaUser2.ventana_crud;
+import ventanaUser2.ventanaUser2;
 import javax.swing.JOptionPane;
 
         
@@ -120,8 +120,8 @@ else if (txtuser.getText().equals("usuario2") && jpassdef.equals("pera")){
                     JOptionPane.INFORMATION_MESSAGE);
 
 
-                    ventana_crud vuser2 = new ventana_crud();
-                    vuser2.start();
+                    ventanaUser2 vuser2 = new ventanaUser2();
+                    vuser2.setVisible(true);
 
             }
 

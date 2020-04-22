@@ -10,6 +10,7 @@ package CRUD_Classes;
  *
  * @author propietario
  */
+import Conection.Conexion;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;

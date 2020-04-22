@@ -17,6 +17,7 @@ public class ventanaUser1 extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
+    static String user = "user1";
     public ventanaUser1() {
         initComponents();
         setLayout(null);
@@ -37,91 +38,73 @@ public class ventanaUser1 extends javax.swing.JFrame {
         Gerentes = new javax.swing.JButton();
         Salarios = new javax.swing.JButton();
         Titulos = new javax.swing.JButton();
-        Departamentos = new javax.swing.JButton();
-        Empdep = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        Empleados.setText("Empleados");
+        Empleados.setText("Empleados por Departamento");
         Empleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EmpleadosActionPerformed(evt);
             }
         });
 
-        Gerentes.setText("Gerentes");
+        Gerentes.setText("Gerentes de Departamento");
         Gerentes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GerentesActionPerformed(evt);
             }
         });
 
-        Salarios.setText("Salarios");
+        Salarios.setText("Salarios de Empleados");
         Salarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SalariosActionPerformed(evt);
             }
         });
 
-        Titulos.setText("Títulos");
+        Titulos.setText("Empleados por titulo");
         Titulos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TitulosActionPerformed(evt);
             }
         });
 
-        Departamentos.setText("Departamentos");
-        Departamentos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DepartamentosActionPerformed(evt);
-            }
-        });
-
-        Empdep.setText("Empleado por departamento");
-        Empdep.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EmpdepActionPerformed(evt);
-            }
-        });
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
+        jLabel1.setText("Employees DataBase");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Empleados, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Titulos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(34, 34, 34)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Gerentes, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(Salarios, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Departamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Empdep)))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGap(83, 83, 83)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Empleados, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Titulos, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(Gerentes, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                        .addComponent(Salarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(124, 124, 124)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Empleados)
-                    .addComponent(Gerentes)
-                    .addComponent(Salarios))
-                .addGap(87, 87, 87)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Titulos)
-                    .addComponent(Departamentos)
-                    .addComponent(Empdep))
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56)
+                .addComponent(Empleados, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Gerentes)
+                .addGap(17, 17, 17)
+                .addComponent(Salarios)
+                .addGap(18, 18, 18)
+                .addComponent(Titulos)
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -129,7 +112,7 @@ public class ventanaUser1 extends javax.swing.JFrame {
 
     private void EmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmpleadosActionPerformed
         // TODO add your handling code here:
-        new Empleados().setVisible(true);
+        new Empleados(user).setVisible(true);
         this.setVisible(false);
         
         
@@ -137,33 +120,21 @@ public class ventanaUser1 extends javax.swing.JFrame {
 
     private void GerentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GerentesActionPerformed
         // TODO add your handling code here:
-        new Gerentes().setVisible(true);
+        new Gerente(user).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_GerentesActionPerformed
 
     private void SalariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalariosActionPerformed
         // TODO add your handling code here:
-        new Salarios().setVisible(true);
+        new Salary(user).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_SalariosActionPerformed
 
     private void TitulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TitulosActionPerformed
         // TODO add your handling code here:
-        new Titulos().setVisible(true);
+        new Titles(user).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_TitulosActionPerformed
-
-    private void DepartamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DepartamentosActionPerformed
-        // TODO add your handling code here:
-        new Departamentos().setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_DepartamentosActionPerformed
-
-    private void EmpdepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmpdepActionPerformed
-        // TODO add your handling code here:
-        new Empdep().setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_EmpdepActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,11 +174,10 @@ public class ventanaUser1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Departamentos;
-    private javax.swing.JButton Empdep;
     private javax.swing.JButton Empleados;
     private javax.swing.JButton Gerentes;
     private javax.swing.JButton Salarios;
     private javax.swing.JButton Titulos;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,6 +1,7 @@
 package CRUD_Classes;
 
 
+import Conection.Conexion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -180,7 +181,7 @@ public class Departments {
 
                     try {
                     Statement st = c.createStatement();
-                     st.executeUpdate("UPDATE meni.departments SET "+label2.getText()+"\"= \""+field2.getText()+"\");");
+                     st.executeUpdate("UPDATE meni.departments SET dept_name = '"+field2.getText()+"')");
                     c.close();
                     JOptionPane.showMessageDialog(null, "Dato agregado correctamente xD");
                     field2.setText("");
