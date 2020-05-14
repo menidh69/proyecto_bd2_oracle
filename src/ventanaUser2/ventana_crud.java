@@ -71,7 +71,7 @@ public class ventana_crud extends Thread{
  }
     
     
-    
+    static String user;
  int rowCount;       
 
     public int getRowCount() {
@@ -83,7 +83,9 @@ public class ventana_crud extends Thread{
     }
 
     
-    
+    public ventana_crud(String user){
+        this.user = user;
+    }
     
  static DefaultTableModel modelo;
  static JTable tabla1;
@@ -95,13 +97,10 @@ JLabel load = new JLabel();
  JButton Stop = new JButton ("Stop - Cancelar");
  JButton Reanudar = new JButton ("Reanudar");
  static Loader l ;
- public static void main(String[] args) {
-     ventana_crud yes = new ventana_crud();
-     yes.start();
- }
+ 
  public void run(){
      
-  ventana_crud v3 = new ventana_crud();
+  ventana_crud v3 = new ventana_crud(user);
   JFrame v = new JFrame("Ventana 3");
 
   
@@ -473,7 +472,7 @@ combotable.getSelectedItem().toString() +" WHERE meni." + combobusqueda.getSelec
                        
                        break;
                    case "employees":
-                       insertEmployee emp = new insertEmployee();
+                       insertEmployee emp = new insertEmployee(user);
                        emp.setVisible(true);
               
                        break;

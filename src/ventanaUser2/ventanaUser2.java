@@ -184,13 +184,13 @@ public class ventanaUser2 extends javax.swing.JFrame {
     }//GEN-LAST:event_TitulosActionPerformed
 
     private void crudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crudActionPerformed
-        ventana_crud v = new ventana_crud();
+        ventana_crud v = new ventana_crud(user);
         v.start();
-        this.setVisible(false);
+        
     }//GEN-LAST:event_crudActionPerformed
 
     private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
-        insertEmployee v1 = new insertEmployee();
+        insertEmployee v1 = new insertEmployee(user);
         v1.setVisible(true);
         this.setVisible(false);
         

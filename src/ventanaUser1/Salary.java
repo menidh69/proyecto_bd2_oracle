@@ -56,6 +56,7 @@ public class Salary extends javax.swing.JFrame {
         setLayout(null);
         setLocationRelativeTo(null);
         setTitle("Empleados");
+        this.user = user;
         
         
         

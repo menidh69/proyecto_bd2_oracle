@@ -38,11 +38,13 @@ public class insertEmployee extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
-    public insertEmployee() {
+    static String user;
+    public insertEmployee(String user) {
         initComponents();
         setLayout(null);
         setLocationRelativeTo(null);
         setTitle("Opciones");
+        this.user = user;
     }
 
     /**
@@ -70,6 +72,8 @@ public class insertEmployee extends javax.swing.JFrame {
         año = new javax.swing.JComboBox<>();
         Newid = new javax.swing.JTextField();
         id = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,6 +121,16 @@ public class insertEmployee extends javax.swing.JFrame {
         Newid.setEnabled(false);
 
         id.setText("Emp_no");
+
+        jMenu1.setText("Regresar");
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -211,7 +225,7 @@ public class insertEmployee extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(sexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
@@ -281,6 +295,22 @@ public class insertEmployee extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_mesActionPerformed
 
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        // TODO add your handling code here:
+        switch (user){
+                case "user1":
+                    new ventanaUser1().setVisible(true);
+                    this.setVisible(false);
+                    break;
+                case "user2":
+                    new ventanaUser2().setVisible(true);
+                    this.setVisible(false);
+                    break;
+                case "user3":
+                    break;
+        } 
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -314,7 +344,7 @@ public class insertEmployee extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new insertEmployee().setVisible(true);
+                new insertEmployee(user).setVisible(true);
                 
             }
         });
@@ -355,6 +385,8 @@ public class insertEmployee extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JComboBox<String> mes;
     private javax.swing.JComboBox<String> sexo;
     // End of variables declaration//GEN-END:variables
