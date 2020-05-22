@@ -49,7 +49,7 @@ public class Gerente extends javax.swing.JFrame {
   modelo.setRowCount(0);
   Conexion conn = new Conexion();
     
-  Connection c = conn.miconexion();
+  Connection c = conn.miconexion(1);
   if (c != null) {
    try {
     Statement st = c.createStatement();
@@ -288,7 +288,7 @@ public class Gerente extends javax.swing.JFrame {
                 + "INNER JOIN meni.departments ON meni.dept_manager.dept_no = meni.departments.dept_no";
         
             
-            ResultSet rs = Conexion.getTable(query);
+            ResultSet rs = Conexion.getTable(query, 1);
         modelo.setColumnIdentifiers(new Object[]{"Employee id", "Department", "Birth date", "Firstname", "Lastname", "Gender", "hire date"});
         try {
             while (rs.next()) {

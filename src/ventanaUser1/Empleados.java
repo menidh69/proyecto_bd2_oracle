@@ -53,7 +53,7 @@ public class Empleados extends javax.swing.JFrame {
   modelo.setRowCount(0);
   Conexion conn = new Conexion();
     
-  Connection c = conn.miconexion();
+  Connection c = conn.miconexion(1);
   if (c != null) {
    try {
     Statement st = c.createStatement();
@@ -452,7 +452,7 @@ public class Empleados extends javax.swing.JFrame {
                 + "INNER JOIN meni.departments ON meni.dept_emp.dept_no = meni.departments.dept_no WHERE meni.departments.dept_name = '"+dept+"' AND ROWNUM <= 1000";
                     }
             
-            ResultSet rs = Conexion.getTable(query);
+            ResultSet rs = Conexion.getTable(query, 1);
         modelo.setColumnIdentifiers(new Object[]{"Employee id", "Birth date", "Firstname", "Lastname", "Gender", "hire date"});
         try {
             while (rs.next()) {

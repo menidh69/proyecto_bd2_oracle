@@ -153,7 +153,7 @@ public class Department_man {
                     java.sql.Date sqlDate = java.sql.Date.valueOf( localDate );
                     java.sql.Date sqlDate2 = java.sql.Date.valueOf( localDate2 );
                     Conexion con = new Conexion();
-                    Connection c = con.miconexion();
+                    Connection c = con.miconexion(2);
                     
                     
       
@@ -299,7 +299,7 @@ public class Department_man {
                 
                else{
                     Conexion con = new Conexion();
-                    Connection c = con.miconexion();
+                    Connection c = con.miconexion(2);
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     int id = Integer.parseInt(field1.getText());
                     String id_dept = field2.getSelectedItem().toString();

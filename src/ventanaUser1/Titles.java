@@ -49,7 +49,7 @@ public class Titles extends javax.swing.JFrame {
   modelo.setRowCount(0);
   Conexion conn = new Conexion();
     
-  Connection c = conn.miconexion();
+  Connection c = conn.miconexion(1);
   if (c != null) {
    try {
     Statement st = c.createStatement();
@@ -402,7 +402,7 @@ public class Titles extends javax.swing.JFrame {
                 + "WHERE meni.titles.title = '"+title+"' AND ROWNUM <= 1000";
                     }
             
-            ResultSet rs = Conexion.getTable(query);
+            ResultSet rs = Conexion.getTable(query, 1);
         modelo.setColumnIdentifiers(new Object[]{"Employee id", "title", "Birth date", "Firstname", "Lastname", "Gender", "hire date"});
         try {
             while (rs.next()) {

@@ -47,7 +47,7 @@ public class ventana_crud extends Thread{
   modelo.setRowCount(0);
   Conexion conn = new Conexion();
     
-  Connection c = conn.miconexion();
+  Connection c = conn.miconexion(2);
   if (c != null) {
      
    try {
@@ -343,7 +343,7 @@ combotable.getSelectedItem().toString() +" WHERE meni." + combobusqueda.getSelec
         if(all.isSelected()){   
             queryamount = "SELECT COUNT(*) FROM meni."+tabla;
             Conexion conn = new Conexion();
-            Connection c = conn.miconexion();
+            Connection c = conn.miconexion(2);
             try{
             Statement st = c.createStatement();
             ResultSet r = st.executeQuery(queryamount);
@@ -410,7 +410,7 @@ combotable.getSelectedItem().toString() +" WHERE meni." + combobusqueda.getSelec
      if(confirmar == 0) {
       //JOptionPane.showMessageDialog(null, "Si lo vas a eliminar");
       Conexion connn = new Conexion();
-      Connection c = connn.miconexion();
+      Connection c = connn.miconexion(2);
 
       if(c != null) {
        try {

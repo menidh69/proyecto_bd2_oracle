@@ -153,7 +153,7 @@ public class Dept_employee {
                 
                else{
                     Conexion con = new Conexion();
-                    Connection c = con.miconexion();
+                    Connection c = con.miconexion(2);
                     int dato1 = Integer.parseInt(field1.getSelectedItem().toString());
                     
       
@@ -280,7 +280,7 @@ public class Dept_employee {
                 
                else{
                     Conexion con = new Conexion();
-                    Connection c = con.miconexion();
+                    Connection c = con.miconexion(2);
                     
                     
       

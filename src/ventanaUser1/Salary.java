@@ -67,7 +67,7 @@ public class Salary extends javax.swing.JFrame {
   modelo.setRowCount(0);
   Conexion conn = new Conexion();
     
-  Connection c = conn.miconexion();
+  Connection c = conn.miconexion(1);
   if (c != null) {
    try {
     Statement st = c.createStatement();
@@ -463,7 +463,7 @@ public class Salary extends javax.swing.JFrame {
 "meni.departments.dept_name = '"+dept+"' AND ROWNUM <= 1000";
                     }
             
-            ResultSet rs = Conexion.getTable(query);
+            ResultSet rs = Conexion.getTable(query, 1);
         modelo.setColumnIdentifiers(new Object[]{"Employee id", "Birth date", "Firstname", "Lastname", "Salary", "Gender", "hire date"});
         try {
             while (rs.next()) {

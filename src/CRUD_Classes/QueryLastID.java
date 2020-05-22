@@ -25,7 +25,7 @@ public class QueryLastID {
     public void setNewID(String query, String columnname){
     try{
         Conexion conn = new Conexion();
-        Connection c = conn.miconexion();
+        Connection c = conn.miconexion(2);
         Statement st = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
         
         ResultSet rs = st.executeQuery(query);

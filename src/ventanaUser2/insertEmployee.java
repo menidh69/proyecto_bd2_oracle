@@ -248,7 +248,7 @@ public class insertEmployee extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
                     Conexion con = new Conexion();
-                    Connection c = con.miconexion();
+                    Connection c = con.miconexion(2);
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     
                     int nuevoid = Integer.parseInt(Newid.getText());
@@ -354,7 +354,7 @@ public class insertEmployee extends javax.swing.JFrame {
         String new_id;
         String query = "SELECT * FROM (SELECT * FROM meni.employees ORDER BY emp_no DESC) WHERE ROWNUM = 1";
         Conexion x = new Conexion();
-        Connection y = x.miconexion();
+        Connection y = x.miconexion(2);
         if(y!=null){
             try {
             Statement st = y.createStatement();

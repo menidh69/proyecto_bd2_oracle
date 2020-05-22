@@ -146,7 +146,7 @@ public class Salaries {
                     java.sql.Date sqlDate = java.sql.Date.valueOf( localDate );
                     java.sql.Date sqlDate2 = java.sql.Date.valueOf( localDate2 );
                     Conexion con = new Conexion();
-                    Connection c = con.miconexion();
+                    Connection c = con.miconexion(2);
                     
                     
       
@@ -283,7 +283,7 @@ public class Salaries {
                 
                else{
                     Conexion con = new Conexion();
-                    Connection c = con.miconexion();
+                    Connection c = con.miconexion(2);
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     int id = Integer.parseInt(field1.getText());
                     int id_dept = (Integer) field2.getValue();

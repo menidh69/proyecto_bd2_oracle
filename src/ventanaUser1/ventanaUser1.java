@@ -5,6 +5,7 @@
  */
 package ventanaUser1;
 
+import VentanasV2.Bonus;
 import java.awt.Color;
 import java.awt.Toolkit;
 

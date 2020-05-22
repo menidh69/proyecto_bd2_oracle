@@ -56,7 +56,7 @@ public class Loader extends Thread {
         modelo.setRowCount(0);
         Conexion conn = new Conexion();
         
-        Connection c = conn.miconexion();
+        Connection c = conn.miconexion(2);
         if (c != null) {
         
             for (int i= 0; i<rows+1; i++){
@@ -102,7 +102,7 @@ public class Loader extends Thread {
   int rows=0;
   Conexion conn = new Conexion();
     
-  Connection c = conn.miconexion();
+  Connection c = conn.miconexion(2);
   if (c != null) {
      
    try {

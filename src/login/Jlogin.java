@@ -7,6 +7,8 @@ package login;
 import ventanaUser1.ventanaUser1;
 import ventanaUser2.ventanaUser2;
 import javax.swing.JOptionPane;
+import ventanaUser2.Mainwindow_user2;
+import ventanaUser3.Mainwindow_user3;
 
         
 public class Jlogin extends javax.swing.JFrame {
@@ -120,7 +122,7 @@ else if (txtuser.getText().equals("usuario2") && jpassdef.equals("pera")){
                     JOptionPane.INFORMATION_MESSAGE);
 
 
-                    ventanaUser2 vuser2 = new ventanaUser2();
+                    Mainwindow_user2 vuser2 = new Mainwindow_user2();
                     vuser2.setVisible(true);
 
             }
@@ -132,7 +134,7 @@ else if (txtuser.getText().equals("usuario3") && jpassdef.equals("platano")){
                     JOptionPane.INFORMATION_MESSAGE);
 
 
-                    vuser3 vuser3 = new vuser3();
+                    Mainwindow_user3 vuser3 = new Mainwindow_user3();
 
                     vuser3.setVisible(true);}
 else {

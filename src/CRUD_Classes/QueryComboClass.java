@@ -35,7 +35,7 @@ public class QueryComboClass {
         
         try{
         Conexion conn = new Conexion();
-        Connection c = conn.miconexion();
+        Connection c = conn.miconexion(2);
         Statement st = c.createStatement();
         ResultSet rs = st.executeQuery(query);
         

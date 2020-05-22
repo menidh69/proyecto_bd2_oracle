@@ -21,13 +21,34 @@ import javax.swing.JOptionPane;
 public class Conexion {
     
     
-    public static Connection miconexion() {
+    public static Connection miconexion(int user) {
 
         String ip = "34.94.152.5";
   final String URL_DB = "jdbc:oracle:thin:@"+ip+":1521:xe";
-        final String USER_DB = "usuario1";
-        final String PASS_DB = "manzana";
-    
+        String USER_DB = "";
+        String PASS_DB = "";
+        switch(user){
+            case 1:
+                USER_DB = "usuario1";
+                PASS_DB = "manzana";
+                break;
+            case 2:
+                USER_DB = "usuario2";
+                PASS_DB = "pera";
+                break;
+            case 3:
+                USER_DB = "usuario3";
+                PASS_DB = "platano";
+                break;
+            
+            
+            
+            case 4:
+        USER_DB = "meni";
+        PASS_DB = "12345678";
+        break;
+        
+        }
     int b = 0;
 
     try {
@@ -63,8 +84,8 @@ public class Conexion {
 }
     return c;
 }
-    public static ResultSet getTable(String consulta) {
-        Connection cn = miconexion();
+    public static ResultSet getTable(String consulta, int user) {
+        Connection cn = miconexion(user);
         Statement st;
         ResultSet datos = null;
         try {

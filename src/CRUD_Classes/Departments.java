@@ -85,7 +85,7 @@ public class Departments {
                 
                else{
                     Conexion con = new Conexion();
-                    Connection c = con.miconexion();
+                    Connection c = con.miconexion(2);
                     int dato1 = Integer.parseInt(id);
                    
                     if (c != null) {
@@ -173,7 +173,7 @@ public class Departments {
                 
                else{
                     Conexion con = new Conexion();
-                    Connection c = con.miconexion();
+                    Connection c = con.miconexion(2);
                    
                    
                     if (c != null) {
